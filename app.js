@@ -3,7 +3,10 @@ const app = express();
 const userModels = require('./usermodel');
 
 const cors = require("cors");
-app.use(cors());
+app.use(cors({
+    origin: "https://notesbynakul.vercel.app",
+    methods: ["GET", "POST", "PUT", "DELETE"]
+}));
 app.use(express.json());
 
 app.get("/", (req, res) => {
