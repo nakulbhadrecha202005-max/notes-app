@@ -1,11 +1,14 @@
 const express = require('express');
-const app = express();
+
 const userModels = require('./usermodel');
 
 const cors = require("cors");
+const app = express();
 app.use(cors({
-    origin: "https://notesbynakul.vercel.app",
+  origin: 'https://notesbynakul.vercel.app',
+  methods: ['GET', 'POST', 'PUT', 'DELETE']
 }));
+app.options('*', cors());
 app.use(express.json());
 
 app.get("/", (req, res) => {
@@ -15,9 +18,10 @@ app.get("/", (req, res) => {
 app.post("/create", async (req, res) => {
     try {
         let createuser = await userModels.create(req.body);
-        res.send(createuser);
+        res.json(createuser);
     } catch (err) {
        console.log("Error ", err);
+        res.status(500).json({ error: err.message });
     }
 });
 
@@ -43,9 +47,10 @@ app.delete("/delete/:id", async (req, res) => {
 app.get("/read", async (req, res) => {
     try {
         let readUser = await userModels.find();
-        res.send(readUser);
+        res.json(readUser);
     } catch (err) {
         console.log("Error ", err);
+        res.status(500).json({ error: err.message });
     }
 });
 
